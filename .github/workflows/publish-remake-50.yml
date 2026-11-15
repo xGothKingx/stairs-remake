@@ -1,0 +1,23 @@
+name: Publish REMAKE 50
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace index.html with the new build
+        run: |
+          mv stairs-remake.html index.html
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm -q --cached stairs-remake.html || true
+          git rm -q .github/workflows/publish-remake-50.yml
+          git commit -m "Publish STAIRS REMAKE 50 build as index.html"
+          git push
